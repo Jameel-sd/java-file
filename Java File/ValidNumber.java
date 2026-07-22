@@ -1,0 +1,42 @@
+public class ValidNumber{
+    public boolean isNumber(String s) {
+        s = s.trim();
+
+        boolean seenDigit = false;
+        boolean seenDot = false;
+        boolean seenExponent = false;
+        boolean digitAfterExponent = true;
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (Character.isDigit(c)) {
+                seenDigit = true;
+                digitAfterExponent = true;
+            } 
+            else if (c == '+' || c == '-') {
+                if (i > 0 && s.charAt(i - 1) != 'e' && s.charAt(i - 1) != 'E') {
+                    return false;
+                }
+            } 
+            else if (c == '.') {
+                if (seenDot || seenExponent) {
+                    return false;
+                }
+                seenDot = true;
+            } 
+            else if (c == 'e' || c == 'E') {
+                if (seenExponent || !seenDigit) {
+                    return false;
+                }
+                seenExponent = true;
+                digitAfterExponent = false;
+            } 
+            else {
+                return false;
+            }
+        }
+
+        return seenDigit && digitAfterExponent;
+    }
+}
